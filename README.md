@@ -21,3 +21,5 @@ It has these commands:
 | ) | If <code>A!=0</code>, jump to the matching <code>(</code> |
 | , | Reads a character from user input and stores its ASCII value to <code>A</code> |
 | . | Output the character with its ASCII value the same as <code>A</code> |
+
+Incorrect commands echo themselves.

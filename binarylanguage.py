@@ -2,6 +2,8 @@ import sys, argparse
 
 
 class BinaryLanguageMachine:
+    """Interprets BinaryLanguage programs"""
+
     def __init__(self, program):
         self.a = 0
         self.b = 0
@@ -11,7 +13,7 @@ class BinaryLanguageMachine:
     def run(self, debug=False):
         stack = []
         matches = {}
-        for i, j in enumerate(self.program):
+        for i, j in enumerate(self.program):  # Match brackets
             if j == "(":
                 stack.append(i)
             if j == ")":
@@ -36,7 +38,7 @@ class BinaryLanguageMachine:
                 self.a += 1
             if cmd == "-":
                 self.a -= 1
-                if self.a < 0:
+                if self.a < 0:  # No change if A is 0
                     self.a += 1
             if cmd == "&":
                 self.a &= self.b
@@ -50,10 +52,14 @@ class BinaryLanguageMachine:
                 self.a >>= self.b
             if cmd == "~":
                 self.a, self.b = self.b, self.a
-            if cmd == "*":
+            if cmd == "*":  # Right circular shift
                 self.a, self.b, self.c = self.c, self.a, self.b
-            if cmd == ",":
-                self.a = ord(sys.stdin.read(1))
+            if cmd == ",":  # EOF results in 0
+                c = sys.stdin.read(1)
+                if not c:
+                    self.a = 0
+                else:
+                    self.a = ord(c)
             if cmd == ".":
                 sys.stdout.write(chr(self.a))
             if cmd == "(":
@@ -62,7 +68,7 @@ class BinaryLanguageMachine:
             if cmd == ")":
                 if self.a:
                     ip = matches[ip] - 1
-            if cmd not in "+-&|^<>~*,.()":
+            if cmd not in "+-&|^<>~*,.()":  # Incorrect commands echo themselves
                 sys.stdout.write(cmd)
             ip += 1
 
